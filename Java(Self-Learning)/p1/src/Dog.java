@@ -5,7 +5,8 @@ public class Dog {
     String name;
     String breed;
     int age;
-    public Dog(String name)
+    public Dog() {}
+    private Dog(String name)
     {
         this.name = name;
     }
