@@ -130,7 +130,7 @@ public class Dog {
             }
             else if (inputNum == 2)
             {
-                
+
             }
             else
             {
