@@ -15,7 +15,7 @@ public class EditDog
             System.out.println("2 -> Edit specific Dog in the Dog List");
             System.out.println("3 -> Delete exist Dog in the Dog List");
             System.out.println("4 -> Display recent Dog List");
-            System.out.println("0 -> Exit");
+            System.out.println("0 -> Backward");
 
             editInput = scanner.nextInt();
             scanner.skip("\\R?");
@@ -29,14 +29,14 @@ public class EditDog
                     modifyDog(scanner, H, D);
                     break;
                 case 3 :
-                    //delDog();
+                    delDog(scanner, H, D);
                     break;
                 case 4 :
                     H.displayList(D.getDogList());
                     break;
                 case 0 :
                     state = false;
-                    H.Exit();
+                    H.backward();
                     break;
                 default :
                     System.out.println("Unknown Input number");
@@ -122,7 +122,7 @@ public class EditDog
             state = responseModify(scanner, true);
             if (!state)
             {
-                System.out.println("\n----Returning to BACKWARD service----\n");
+                H.backward();
             }
         }
     }
@@ -228,5 +228,10 @@ public class EditDog
             state = responseModify(scanner, state);
             return state;
         }
+    }
+
+    public static void delDog(Scanner scanner, Helper H, DogArray D)
+    {
+
     }
 }
