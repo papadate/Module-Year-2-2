@@ -1,6 +1,6 @@
 public class DogArray
 {
-    Dog[] DogList;
+    private Dog[] DogList;
     public DogArray()
     {
         this.DogList = new Dog[10];

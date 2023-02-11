@@ -1,3 +1,4 @@
+import java.util.*;
 public class Helper
 {
     public int getLength(Dog[] List)
@@ -21,17 +22,23 @@ public class Helper
         }
         else
         {
+            String line = "------------------------------------------------------------------------------";
             int counterDogList = 0;
+            System.out.format("%64s\n", line);
+            System.out.format("%16s%16s%16s%16s\n", "Number", "Name", "Age", "Breed");
+            System.out.format("%64s\n", line);
             while (counterDogList < length)
             {
-                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                System.out.println("No." + (counterDogList+1));
-                System.out.println("Name is : " + List[counterDogList].getName());
-                System.out.println("Age is : " + List[counterDogList].getAge());
-                System.out.println("Breed is : " + List[counterDogList].getBreed());
+                String number = "No." + (counterDogList + 1);
+                String Name = List[counterDogList].getName();
+                String Age = "" + List[counterDogList].getAge();
+                String Breed = List[counterDogList].getBreed();
+
+                System.out.format("%16s%16s%16s%16s\n", number, Name, Age, Breed);
+
                 if (counterDogList == length - 1)
                 {
-                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    System.out.format("%64s\n", line);
                     System.out.println();
                 }
                 counterDogList++;
@@ -41,10 +48,10 @@ public class Helper
     public void defaultDog(Dog[] dog1List, DogArray D)
     {
         Dog[] temp = new Dog[10];
-        String[] name = {"baby", "fuckSky", "阿瓜"};
-        String[] breed = {"贵宾犬", "泰迪犬", "阿呆"};
-        int[] age = {2,6,3};
-        for (int i = 0; i < 3; i++)
+        String[] name = {"baby", "fuckSky Zhao", "阿瓜", "Tom", "Ag", "S*t"};
+        String[] breed = {"贵宾犬", "泰迪犬", "阿呆", "f", "???", "SSR"};
+        int[] age = {2,6,3,7,3,1};
+        for (int i = 0; i < 6; i++)
         {
             temp[i] = createDog();
             temp[i].setName(name[i]);
@@ -61,5 +68,25 @@ public class Helper
     public void Exit()
     {
         System.out.println("GoodBye!~~");
+    }
+
+    public boolean confirm(Scanner scanner)
+    {
+        System.out.println("Do you confirm the information is correct? [y/n]");
+        String confirm = scanner.nextLine();
+        if (confirm.equals("n"))
+        {
+            return false;
+        }
+        else if (confirm.equals("y"))
+        {
+            return true;
+        }
+        else
+        {
+            System.out.println("Invalid Input!");
+            boolean state = confirm(scanner);
+            return state;
+        }
     }
 }
