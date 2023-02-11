@@ -232,6 +232,10 @@ public class EditDog
 
     public static void delDog(Scanner scanner, Helper H, DogArray D)
     {
+        boolean state = true;
 
+        System.out.println("Welcome to the DELETE service on Dog List!");
+        System.out.println("There is the recent Dog List, please select the dog (Number) you want to modify?");
+        System.out.println("Example : 1 -> SELECT The first dog in your list");
     }
 }
