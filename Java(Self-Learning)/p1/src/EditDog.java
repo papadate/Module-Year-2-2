@@ -218,7 +218,7 @@ public class EditDog
     public static boolean deleting(DogArray D, Helper H, Scanner scanner, int givenNum)
     {
         System.out.println("This is your aim to DELETE : ");
-        H.displayDog(D, H, givenNum);
+        H.displayDog(D, givenNum);
         if (H.confirm(scanner))
         {
             System.out.println("Deleting... ... ...");
@@ -229,8 +229,10 @@ public class EditDog
             {
                 tempList[i - 1] = tempList[i];
             }
+            tempList[recentLength - 1] = null;
             D.setDogList(tempList);
             System.out.println("Delete **Finish**");
+            H.displayList(D.getDogList());
             return false;
         }
         else

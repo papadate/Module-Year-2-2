@@ -22,11 +22,11 @@ public class Helper
         }
         else
         {
-            String line = "------------------------------------------------------------------------------";
+            String line = "-----------------------------------------------------------------";
             int counterDogList = 0;
-            System.out.format("%64s\n", line);
-            System.out.format("%16s%16s%16s%16s\n", "Number", "Name", "Age", "Breed");
-            System.out.format("%64s\n", line);
+            System.out.println(line);
+            System.out.format("%7s%16s%16s%20s\n", "Number", "Name", "Age", "Breed");
+            System.out.println(line);
             while (counterDogList < length)
             {
                 String number = "No." + (counterDogList + 1);
@@ -34,11 +34,11 @@ public class Helper
                 String Age = "" + List[counterDogList].getAge();
                 String Breed = List[counterDogList].getBreed();
 
-                System.out.format("%16s%16s%16s%16s\n", number, Name, Age, Breed);
+                System.out.format("%7s%16s%16s%20s\n", number, Name, Age, Breed);
 
                 if (counterDogList == length - 1)
                 {
-                    System.out.format("%64s\n", line);
+                    System.out.println(line);
                     System.out.println();
                 }
                 counterDogList++;
@@ -46,31 +46,31 @@ public class Helper
         }
     }
 
-    public void displayDog(DogArray D, Helper H, int givenNum)
+    public void displayDog(DogArray D, int givenNum)
     {
         int index = givenNum - 1;
         Dog temp = D.getDogList()[index];
 
-        String line = "------------------------------------------------------------------------------";
-        System.out.format("%64s\n", line);
-        System.out.format("%16s%16s%16s%16s\n", "Number", "Name", "Age", "Breed");
+        String line = "-----------------------------------------------------------------";
+        System.out.println(line);
+        System.out.format("%7s%16s%16s%20s\n", "Number", "Name", "Age", "Breed");
 
         String number = "No." + givenNum;
         String Name = temp.getName();
         String Age = "" + temp.getAge();
         String Breed = temp.getBreed();
-        System.out.format("%16s%16s%16s%16s\n", number, Name, Age, Breed);
+        System.out.format("%7s%16s%16s%20s\n", number, Name, Age, Breed);
 
-        System.out.format("%64s\n", line);
+        System.out.println(line);
         System.out.println();
     }
 
     public void defaultDog(DogArray D)
     {
         Dog[] temp = new Dog[10];
-        String[] name = {"baby", "fuckSky Zhao", "阿瓜", "Tom", "Ag", "S*t"};
-        String[] breed = {"贵宾犬", "泰迪犬", "阿呆", "f", "???", "SSR"};
-        int[] age = {2,6,3,7,3,1};
+        String[] name = {"dog1", "dog2", "dog3", "dog4", "dog5", "dog6"};
+        String[] breed = {"Poodle", "Toy-poodle", "Shiba-Inu", "German Shepherd", "Golden Retriever", "???"};
+        int[] age = {2,6,3,1,3,1};
         for (int i = 0; i < 6; i++)
         {
             temp[i] = createDog();
