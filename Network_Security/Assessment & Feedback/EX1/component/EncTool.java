@@ -1,10 +1,7 @@
 // An encryption tool
 // Apart of Ex1 for Intro. to Comp. Sec.
 
-import java.io.Console;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PublicKey;
@@ -140,15 +137,47 @@ public class EncTool {
         return publicKey;
     }
 
-    private static void decryptRSA() {
-        System.out.println("RSA Decryption not yet supported");
+    private static void decryptRSA()
+    {
+      System.out.println("RSA Decryption not yet supported");
+
     }
 
     private static void decryptAESCTR() {
-        System.out.println("AES CTR Decryption not yet supported");
+        //System.out.println("AES CTR Decryption not yet supported");
+        try
+        {
+            FileInputStream getFile = new FileInputStream(inFile);
+            byte[] iv = new byte[16];
+            getFile.read(iv);
+            byte[] CipherText = new byte[120];
+            getFile.read(CipherText);
+            System.out.println("IV :");
+            displayInfo(iv);
+            System.out.println(byteArrayToHexString(iv));
+            System.out.println();
+            System.out.println("Cipher Text in ");
+            displayInfo(CipherText);
+            System.out.println(byteArrayToHexString(CipherText));
+
+            SecretKeySpec secretKeySpec = new SecretKeySpec(hexStringToByteArray(hexKey), "AES");
+            Cipher decAESCTRcipher = Cipher.getInstance("AES/CTR/NoPadding");
+            IvParameterSpec ivSpec = new IvParameterSpec(iv);
+
+            decAESCTRcipher.init(Cipher.DECRYPT_MODE, secretKeySpec,ivSpec);
+
+            byte[] PlainText = decAESCTRcipher.doFinal(CipherText);
+            System.out.println("Plaint Text :");
+            displayInfo(PlainText);
+            System.out.println(byteArrayToHexString(PlainText));
+        } catch (Exception e)
+        {
+            System.out.println(e);
+        }
     }
 
-    private static void decryptAESCCM() {
+    private static void decryptAESCCM()
+    {
         System.out.println("AES CCM Decryption not yet supported");
     }
 
@@ -167,9 +196,16 @@ public class EncTool {
             // Open and read the input file
             // N.B. this program reads the whole file into memory, not good for large programs!
             RandomAccessFile rawDataFromFile = new RandomAccessFile(inFile, "r");
+            System.out.println("Length is :" + (int) rawDataFromFile.length());
             byte[] plainText = new byte[(int) rawDataFromFile.length()];
             rawDataFromFile.read(plainText);
             rawDataFromFile.close();
+            System.out.println("Plaint text Hex");
+            displayInfo(plainText);
+            System.out.println();
+            System.out.println("Plaint text string");
+            System.out.println(byteArrayToHexString(plainText));
+            System.out.println();
 
             //Set up the AES key & cipher object in CTR mode
             SecretKeySpec secretKeySpec = new SecretKeySpec(hexStringToByteArray(hexKey), "AES");
@@ -177,6 +213,7 @@ public class EncTool {
             SecureRandom random = new SecureRandom();
             byte iv[] = new byte[16];
             random.nextBytes(iv);
+            displayInfo(iv);
             IvParameterSpec ivSpec = new IvParameterSpec(iv);
             encAESCTRcipher.init(Cipher.ENCRYPT_MODE, secretKeySpec,ivSpec);
 
@@ -185,6 +222,7 @@ public class EncTool {
 
             //Write file to disk
             System.out.println("Openning file to write: "+outFile);
+            BackUp(plainText, cipherText, iv, null, "ctr");
             FileOutputStream outToFile = new FileOutputStream(outFile);
             outToFile.write(iv);
             outToFile.write(cipherText);
@@ -258,5 +296,48 @@ public class EncTool {
                     + Character.digit(s.charAt(i+1), 16));
         }
         return data;
+    }
+
+    private static void displayInfo(byte[] info)
+    {
+        for (int i = 0; i < info.length; i++)
+        {
+            System.out.format("%02X", info[i]);
+        }
+        System.out.println();
+    }
+
+    private static void BackUp(byte[] plainText, byte[] cipherText, byte[] iv, String key, String mode)
+    {
+        switch (mode)
+        {
+            case "ctr":
+                writeFile(plainText,cipherText,iv,null,mode);
+                break;
+            default:
+                System.out.println("Unknown");
+                break;
+        }
+    }
+
+    private static void writeFile(byte[] plainText, byte[] cipherText, byte[] iv, String key, String mode)
+    {
+        try {
+            String name = mode + ".txt";
+            FileOutputStream f = new FileOutputStream(name);
+            //plainText = "PlaintText : " + plainText;
+            f.write(plainText);
+            //cipherText = "CipherText : " + cipherText;
+            f.write(cipherText);
+            //iv = "IV : " + iv;
+            f.write(iv);
+            //mode = "Mode : " + mode;
+            //f.write(mode);
+            f.close();
+        } catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
     }
 }
