@@ -7,7 +7,7 @@ public class Launcher
         Helper help = new Helper();
         DogArray dogList = new DogArray();
         EditDog Edit = new EditDog();
-        help.defaultDog(dogList.getDogList(), dogList);
+        help.defaultDog(dogList);
         Scanner scanner = new Scanner(System.in);
         boolean state = true;
 
@@ -15,9 +15,9 @@ public class Launcher
 
         while(state)
         {
-            int inputNum = -1;
+            int inputNum;
 
-            System.out.printf("Hi, this is Dog manager\n");
+            System.out.print("Hi, this is Dog manager\n");
             System.out.println("1 -> show dog list");
             System.out.println("2 -> Edit dog list");
             System.out.println("0 -> Exit");
@@ -29,19 +29,19 @@ public class Launcher
             switch (inputNum)
             {
                 case 1 :
-                    state = true;
+                    //state = true;
                     help.displayList(dogList.getDogList());
                     break;
                 case 2 :
-                    state = true;
+                    //state = true;
                     Edit.editDog(dogList);
                     break;
                 case 0 :
                     state = false;
-                    //Exit();
+                    help.Exit();
                     break;
                 default :
-                    state = true;
+                    //state = true;
                     //test(scanner,);
                     break;
             }

@@ -7,7 +7,7 @@ public class EditDog
         Helper H = new Helper();
         Scanner scanner = new Scanner(System.in);
         boolean state = true;
-        int editInput = -1;
+        int editInput;
 
         while (state)
         {
@@ -52,13 +52,13 @@ public class EditDog
         if (recentLength == 10)
         {
             System.out.println("Sorry, capacity of list is FULL!");
-            return;
+            System.exit(-1);
         }
         else
         {
             System.out.printf("Note : You can still create %d more dogs from now on\n", 10 - recentLength);
             boolean tempBool = true;
-            boolean valid = true;
+            boolean valid;
             Dog[] tempList = D.getDogList();
             Dog temp = H.createDog();
             while (tempBool)
@@ -99,9 +99,9 @@ public class EditDog
 
     public static void modifyDog(Scanner scanner, Helper H, DogArray D)
     {
-        int numResp = -1;
+        int numResp;
         boolean state = true;
-        boolean valid = true;
+        boolean valid;
         while (state)
         {
             System.out.println("Welcome to Modify Service on DogList");
@@ -119,7 +119,7 @@ public class EditDog
             {
                 System.out.println("Sorry, the number does not exist in your List!");
             }
-            state = responseModify(scanner, true);
+            state = loopConfirm(scanner, 2);
             if (!state)
             {
                 H.backward();
@@ -183,17 +183,82 @@ public class EditDog
         }
         H.displayList(D.getDogList());
     }
-    public static boolean validation_Check(DogArray D, Helper H, int givenNum)
+
+
+    public static void delDog(Scanner scanner, Helper H, DogArray D)
     {
-        if (H.getLength(D.getDogList()) >= givenNum)
+        boolean state = true;
+        int inputNum;
+
+        System.out.println("Welcome to the DELETE service on Dog List!");
+
+        while (state)
         {
+            System.out.println("There is the recent Dog List, please select the dog (Number) you want to modify?");
+            System.out.println("Example : 1 -> SELECT The first dog in your list");
+            H.displayList(D.getDogList());
+            inputNum = scanner.nextInt();
+            scanner.skip("\\R?");
+            if (validation_Check(D, H, inputNum))
+            {
+                state = deleting(D, H, scanner, inputNum);
+                if (state)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                System.out.println("Sorry, the number does not exist in your List!");
+            }
+            state = loopConfirm(scanner, 3);
+        }
+    }
+
+    public static boolean deleting(DogArray D, Helper H, Scanner scanner, int givenNum)
+    {
+        System.out.println("This is your aim to DELETE : ");
+        H.displayDog(D, H, givenNum);
+        if (H.confirm(scanner))
+        {
+            System.out.println("Deleting... ... ...");
+            int index = givenNum - 1;
+            Dog[] tempList = D.getDogList();
+            int recentLength = H.getLength(tempList);
+            for (int i = index + 1; i < recentLength; i++)
+            {
+                tempList[i - 1] = tempList[i];
+            }
+            D.setDogList(tempList);
+            System.out.println("Delete **Finish**");
+            return false;
+        }
+        else
+        {
+            System.out.println("Reset to early version... ... ...");
             return true;
         }
-        return false;
     }
-    public static boolean responseModify(Scanner scanner)
+    public static boolean validation_Check(DogArray D, Helper H, int givenNum)
     {
-        System.out.println("Do you want to continue -Modify- DogList? [y/n]");
+        return (H.getLength(D.getDogList()) >= givenNum) && givenNum != 0;
+    }
+    public static boolean loopConfirm(Scanner scanner, int arg)
+    {
+        String function;
+        switch (arg)
+        {
+            case 2 :
+                function = "Modify";
+                break;
+            case 3 :
+                function = "Delete";
+                break;
+            default :
+                function = "Unknown Service";
+                break;
+        }
+        System.out.printf("Do you want to continue -%s- DogList? [y/n]\n", function);
         String responseForReuse = scanner.nextLine();
         if (responseForReuse.equals("n"))
         {
@@ -206,36 +271,7 @@ public class EditDog
         else
         {
             System.out.println("Invalid Input!");
-            boolean state = responseModify(scanner);
-            return state;
+            return loopConfirm(scanner, arg);
         }
-    }
-    public static boolean responseModify(Scanner scanner, boolean state)
-    {
-        System.out.println("Do you want to continue -Modify- DogList? [y/n]");
-        String responseForReuse = scanner.nextLine();
-        if (responseForReuse.equals("n"))
-        {
-            state = false;
-            return state;
-        }
-        else if (responseForReuse.equals("y"))
-        {
-            return state;
-        }
-        else
-        {
-            state = responseModify(scanner, state);
-            return state;
-        }
-    }
-
-    public static void delDog(Scanner scanner, Helper H, DogArray D)
-    {
-        boolean state = true;
-
-        System.out.println("Welcome to the DELETE service on Dog List!");
-        System.out.println("There is the recent Dog List, please select the dog (Number) you want to modify?");
-        System.out.println("Example : 1 -> SELECT The first dog in your list");
     }
 }

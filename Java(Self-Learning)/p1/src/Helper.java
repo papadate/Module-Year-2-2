@@ -45,7 +45,27 @@ public class Helper
             }
         }
     }
-    public void defaultDog(Dog[] dog1List, DogArray D)
+
+    public void displayDog(DogArray D, Helper H, int givenNum)
+    {
+        int index = givenNum - 1;
+        Dog temp = D.getDogList()[index];
+
+        String line = "------------------------------------------------------------------------------";
+        System.out.format("%64s\n", line);
+        System.out.format("%16s%16s%16s%16s\n", "Number", "Name", "Age", "Breed");
+
+        String number = "No." + givenNum;
+        String Name = temp.getName();
+        String Age = "" + temp.getAge();
+        String Breed = temp.getBreed();
+        System.out.format("%16s%16s%16s%16s\n", number, Name, Age, Breed);
+
+        System.out.format("%64s\n", line);
+        System.out.println();
+    }
+
+    public void defaultDog(DogArray D)
     {
         Dog[] temp = new Dog[10];
         String[] name = {"baby", "fuckSky Zhao", "阿瓜", "Tom", "Ag", "S*t"};
@@ -60,10 +80,9 @@ public class Helper
         }
         D.setDogList(temp);
     }
-    public static Dog createDog()
+    public Dog createDog()
     {
-        Dog temp = new Dog();
-        return temp;
+        return new Dog();
     }
     public void Exit()
     {
@@ -85,8 +104,7 @@ public class Helper
         else
         {
             System.out.println("Invalid Input!");
-            boolean state = confirm(scanner);
-            return state;
+            return confirm(scanner);
         }
     }
 

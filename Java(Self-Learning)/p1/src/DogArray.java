@@ -1,6 +1,6 @@
 public class DogArray
 {
-    private Dog[] DogList;
+    private final Dog[] DogList;
     public DogArray()
     {
         this.DogList = new Dog[10];
@@ -11,17 +11,14 @@ public class DogArray
         return DogList;
     }
 
-    public Dog[] setDogList(Dog[] tempList)
+    public void setDogList(Dog[] tempList)
     {
         Helper H = new Helper();
         int length_old = H.getLength(this.DogList);
         int length_new = H.getLength(tempList);
         if (length_old < length_new)
         {
-            for(int i = 0; i < length_new; i++)
-            {
-                this.DogList[i] = tempList[i];
-            }
+            if (length_new >= 0) System.arraycopy(tempList, 0, this.DogList, 0, length_new);
         }
         else
         {
@@ -37,6 +34,5 @@ public class DogArray
                }
             }
         }
-        return this.DogList;
     }
 }
