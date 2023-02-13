@@ -8,6 +8,7 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.cert.Certificate;
+import java.util.Scanner;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -145,37 +146,57 @@ public class EncTool {
 
     private static void decryptAESCTR() {
         //System.out.println("AES CTR Decryption not yet supported");
+        int length = -1;
+        int counter = 0;
+        byte[] iv = new byte[16];
+        byte[] cipher = new byte[16];
+        String plaintext = "";
+        Scanner scan = new Scanner(System.in);
         try
         {
-            FileInputStream getFile = new FileInputStream(inFile);
-            byte[] iv = new byte[16];
-            getFile.read(iv);
-            byte[] CipherText = new byte[120];
-            getFile.read(CipherText);
-            System.out.println("IV :");
-            displayInfo(iv);
-            System.out.println(byteArrayToHexString(iv));
-            System.out.println();
-            System.out.println("Cipher Text in ");
-            displayInfo(CipherText);
-            System.out.println(byteArrayToHexString(CipherText));
+            FileInputStream getContent = new FileInputStream(inFile);
+            //get initial vector
+            length = getContent.read(iv);
+            System.out.println("Initial vector length is : " + length);
+            System.out.println("Initial vector is : " + (byteArrayToHexString(iv)));
 
-            SecretKeySpec secretKeySpec = new SecretKeySpec(hexStringToByteArray(hexKey), "AES");
-            Cipher decAESCTRcipher = Cipher.getInstance("AES/CTR/NoPadding");
-            IvParameterSpec ivSpec = new IvParameterSpec(iv);
+            while (true)
+            {
+                length = getContent.read(cipher);
 
-            decAESCTRcipher.init(Cipher.DECRYPT_MODE, secretKeySpec,ivSpec);
+                if (length != -1)
+                {
+                    System.out.println("-------------------------------------------");
+                    System.out.println("Counter [" + counter + "]");
+                    System.out.println("Length of cipher is : " + length);
+                    System.out.println("Hex of Cipher is : " + byteArrayToHexString(cipher));
+                    System.out.println("-------------------------------------------");
 
-            byte[] PlainText = decAESCTRcipher.doFinal(CipherText);
-            System.out.println("Plaint Text :");
-            displayInfo(PlainText);
-            System.out.println(byteArrayToHexString(PlainText));
+                    System.out.println("Confirm the iv :");
+                    System.out.println(byteArrayToHexString(iv));
+                    String newIV = scan.nextLine();
+                    iv = hexStringToByteArray(newIV);
+                    byte[] plain = decryptCTR(cipher, iv, length);
+                    plaintext += byteArrayToHexString(plain);
+                }
+                else
+                {
+                    System.out.println("File End");
+                    break;
+                }
+                counter++;
+            }
+            getContent.close();
         } catch (Exception e)
         {
             System.out.println(e);
         }
     }
 
+    private static byte[] decryptCTR(byte[] cipher, byte[] iv, int length)
+    {
+        return null;
+    }
     private static void decryptAESCCM()
     {
         System.out.println("AES CCM Decryption not yet supported");
