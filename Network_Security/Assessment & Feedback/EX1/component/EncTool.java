@@ -94,6 +94,7 @@ public class EncTool {
             System.out.println("Generating AES key"); 
             KeyGenerator sKenGen = KeyGenerator.getInstance("AES"); 
             Key aesKey = sKenGen.generateKey();
+            System.out.println(aesKey.toString());
             Cipher aesCipher = Cipher.getInstance("AES");
             aesCipher.init(Cipher.ENCRYPT_MODE, aesKey);
 
